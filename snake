@@ -1,0 +1,229 @@
+import java.awt.*;
+import javax.swing.*;
+import java.util.*;
+import javax.swing.Timer;
+import java.awt.event.*;
+import javax.swing.border.*;
+public class Snake {
+    public static void main(String[] args) {
+        SnakeFrame frame = new SnakeFrame();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setResizable(false);
+        frame.show();
+    }
+}
+class SnakeFrame extends JFrame {
+    public static SnakePanel p = new SnakePanel();
+    public static Timer t;
+    public act a;
+    public static JTextField number;
+    public SnakeFrame() {
+        setTitle("test");
+        setSize(449, 490);
+        Container contentPane = getContentPane();
+        a = new act();
+        number = new JTextField();
+        number.setBackground(Color.CYAN);
+        number.setEditable(false);
+        number.setBounds(200, 5, 40, 20);
+        JPanel panel = new JPanel();
+        JLabel lab = new JLabel();
+        lab.setText("已吃了");
+        lab.setBounds(160, 3, 40, 20);
+        JLabel lab0 = new JLabel();
+        lab0.setText("个");
+        lab0.setBounds(240, 3, 40, 20);
+        panel.setLayout(null);
+        panel.add(lab0);
+        panel.add(lab);
+        number.setFocusable(false);
+        number.setText("0");
+        panel.add(number);
+        panel.setBounds(0, 0, 480, 30);
+        contentPane.setLayout(null);
+        p.setBounds(20, 40, 400, 400);
+        Border b = BorderFactory.createEtchedBorder(Color.BLUE, Color.RED);
+        panel.setBorder(b);
+        contentPane.add(panel);
+        contentPane.add(p);
+        a.Test();
+        t = new Timer(130, a);
+        t.start();
+    }
+}
+class act implements ActionListener {
+    public static int num = 2;
+    int i = 20;
+    int j = 2;
+    public int m;
+    public int n;
+    public static int k = 0;
+    public LinkedList list = new LinkedList();
+    
+    {
+        Iterator iter = list.iterator();
+        list.add(SnakeFrame.p.b[0][1]);
+        list.add(SnakeFrame.p.b[0][2]);
+        list.add(SnakeFrame.p.b[0][3]);
+    }
+    public void actionPerformed(ActionEvent e) {
+        if (k == 0) {
+            if (i == m && j == n) {
+                list.add(SnakeFrame.p.b[0][4]);
+                Test();
+                SnakeFrame.t.setDelay(100 + (int) (100 * Math.pow(0.97, list.size())));
+                SnakeFrame.number.setText(addnum());
+            }
+            if (list.contains(SnakeFrame.p.b[i][j])) {
+                SnakeFrame.t.stop();
+                JOptionPane.showMessageDialog(null, "You Lost!");
+            }
+            SnakeFrame.p.b[i][j].setBackground(Color.RED);
+            list.addFirst(SnakeFrame.p.b[i][j]);
+            ((SnakeButton) list.removeLast()).setBackground(Color.WHITE);
+            j++;
+            if (j > 39) {
+                SnakeFrame.t.stop();
+                JOptionPane.showMessageDialog(null, "You Lost!");
+            }
+           else if(j<=0); 
+        } 
+        else if (k == 1) {
+            if (i == m && j == n) {
+                list.add(SnakeFrame.p.b[0][4]);
+                Test();
+                SnakeFrame.t.setDelay(100 + (int) (100 * Math.pow(0.97, list.size())));
+                SnakeFrame.number.setText(addnum());
+            }
+            if (list.contains(SnakeFrame.p.b[i][j])) {
+                SnakeFrame.t.stop();
+                JOptionPane.showMessageDialog(null, "You Lost!");
+            }
+            SnakeFrame.p.b[i][j].setBackground(Color.RED);
+            list.addFirst(SnakeFrame.p.b[i][j]);
+            ((SnakeButton) list.removeLast()).setBackground(Color.WHITE);
+            i--;
+            if (i < 0) {
+                SnakeFrame.t.stop();
+                JOptionPane.showMessageDialog(null, "You Lost!");
+            }
+        } else if (k == 2) {
+            if (i == m && j == n) {
+                list.add(SnakeFrame.p.b[0][4]);
+                Test();
+                SnakeFrame.t.setDelay(100 + (int) (100 * Math.pow(0.97, list.size())));
+                SnakeFrame.number.setText(addnum());
+            }
+            if (list.contains(SnakeFrame.p.b[i][j])) {
+                SnakeFrame.t.stop();
+                JOptionPane.showMessageDialog(null, "You Lost!");
+            }
+            SnakeFrame.p.b[i][j].setBackground(Color.RED);
+            list.addFirst(SnakeFrame.p.b[i][j]);
+            ((SnakeButton) list.removeLast()).setBackground(Color.WHITE);
+            i++;
+            if (i > 39) {
+                SnakeFrame.t.stop();
+                JOptionPane.showMessageDialog(null, "You Lost!");
+            }
+        } else if (k == 3) {
+            if (i == m && j == n) {
+                list.add(SnakeFrame.p.b[0][4]);
+                Test();
+                SnakeFrame.t.setDelay(100 + (int) (100 * Math.pow(0.97, list.size())));
+                SnakeFrame.number.setText(addnum());
+            }
+            if (list.contains(SnakeFrame.p.b[i][j])) {
+                SnakeFrame.t.stop();
+                JOptionPane.showMessageDialog(null, "You Lost!");
+            }
+            SnakeFrame.p.b[i][j].setBackground(Color.RED);
+            list.addFirst(SnakeFrame.p.b[i][j]);
+            ((SnakeButton) list.removeLast()).setBackground(Color.WHITE);
+            j--;
+            if (j < 0) {
+                SnakeFrame.t.stop();
+                JOptionPane.showMessageDialog(null, "You Lost!");
+            }
+        }
+    }
+    public static void changDirect() {
+        if (k == 0) {
+            k = 1;
+        } else if (k == 1) {
+            k = 0;
+        }
+    }
+    public void Test() {
+        Random rand = new Random();
+        m = rand.nextInt(39);
+        n = rand.nextInt(39);
+        SnakeFrame.p.b[m][n].setBackground(Color.BLUE);
+    }
+    private String addnum() {
+        Integer c = new Integer(list.size());
+        int t = c.intValue() - 3;
+        Integer d = new Integer(t);
+        return d.toString();
+    }
+}
+class SnakePanel extends JPanel {
+    SnakeButton[][] b = new SnakeButton[40][40];
+    public SnakePanel() {
+        setLayout(null);
+        for (int i = 0; i <= 39; i++) {
+            for (int j = 0; j <= 39; j++) {
+                b[i][j] = new SnakeButton();
+                b[i][j].i = i;
+                b[i][j].j = j;
+                b[i][j].setBounds(i * 10, j * 10, 10, 10);
+                b[i][j].setBackground(Color.WHITE);
+                b[i][j].setEnabled(false);
+                add(b[i][j]);
+            }
+        }
+        KeyHandle keylist = new KeyHandle();
+        addKeyListener(keylist);
+        setFocusable(true);
+    }
+    public static void convert(SnakeButton b1, SnakeButton b2) {
+        b1.setBounds(b2.i * 5, b2.j * 5, 5, 5);
+        b2.setBounds(b1.i * 5, b1.j * 5, 5, 5);
+        int k = b1.i;
+        int m = b1.j;
+        b1.i = b2.i;
+        b2.i = k;
+        b1.j = b2.j;
+        b2.j = m;
+    }
+}
+class KeyHandle implements KeyListener {
+    public void keyPressed(KeyEvent event) {
+        int keyCode = event.getKeyCode();
+        if (keyCode == KeyEvent.VK_UP && act.k != 0) {
+            act.k = 3;
+        } else if (keyCode == KeyEvent.VK_LEFT && act.k != 2) {
+            act.k = 1;
+        } else if (keyCode == KeyEvent.VK_DOWN && act.k != 3) {
+            act.k = 0;
+        } else if (keyCode == KeyEvent.VK_RIGHT && act.k != 1) {
+            act.k = 2;
+        }
+    }
+    public void keyReleased(KeyEvent event) {
+    }
+    public void keyTyped(KeyEvent event) {
+        char keyChar = event.getKeyChar();
+        if (keyChar == 'i') {
+            System.out.println("hello");
+        }
+    }
+}
+class SnakeButton extends JButton {
+    private static final long serialVersionUID = 1L;
+    public int i;
+    public int j;
+    public SnakeButton() {
+        
+    }
+}
